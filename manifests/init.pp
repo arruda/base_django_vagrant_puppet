@@ -57,17 +57,30 @@ python::virtualenv { "/home/vagrant/.venvs/${proj_name}":
   group        => 'vagrant',
 }
  ->
-# supervisord
+# supervisord install
 class { 'supervisord':
+}
+->
+# celery confs
+class { 'celery'
   app_name    => "${proj_name}",
   python_path        => "/home/vagrant/.venvs/${proj_name}/bin/python",
   app_path           => "/vagrant/${proj_name}",
   manage_path        => "/vagrant/manage.py",
   user               => 'vagrant',
-  venv_path          => "/home/vagrant/.venvs/${proj_name}",
-  django_settings_module => "${proj_name}.settings",
-  django_wsgi_module => "${proj_name}.wsgi"
 }
+->
+# gunicorn confs
+class { 'gunicorn'
+  app_name    => "${proj_name}",
+  python_path        => "/home/vagrant/.venvs/${proj_name}/bin/python",
+  app_path           => "/vagrant/${proj_name}",
+  manage_path        => "/vagrant/manage.py",
+  user               => 'vagrant',
+}
+->
+# supervisord execute
+supervisord::exec {}
 ->
 
 exec { 'collect_statics':
