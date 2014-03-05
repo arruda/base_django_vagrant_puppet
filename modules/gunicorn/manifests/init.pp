@@ -19,6 +19,6 @@ class gunicorn (
         owner   => 'vagrant',
         group   => 'vagrant',
         require => File['/etc/supervisord/conf.d'],
-        content => template('supervisord/conf.d/myapp-gunicorn.conf')
+        content => template('gunicorn/conf.d/myapp-gunicorn.conf')
     }
 }

@@ -24,14 +24,14 @@ class celery (
         owner   => 'vagrant',
         group   => 'vagrant',
         require => File['/etc/supervisord/conf.d'],
-        content => template('supervisord/conf.d/myapp-celery.conf')
+        content => template('celery/conf.d/myapp-celery.conf')
     }
     file { "/etc/supervisord/conf.d/${app_name}-celerybeat.conf":
         path    => "/etc/supervisord/conf.d/${app_name}-celerybeat.conf",
         owner   => 'vagrant',
         group   => 'vagrant',
         require => File['/etc/supervisord/conf.d'],
-        content => template('supervisord/conf.d/myapp-celerybeat.conf')
+        content => template('celery/conf.d/myapp-celerybeat.conf')
     }
 
 }

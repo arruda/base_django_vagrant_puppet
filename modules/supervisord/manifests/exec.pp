@@ -1,4 +1,6 @@
-class supervisord::exec {
+class supervisord::exec (
+  $venv_path          = '',
+){
 
     exec { 'supervisord':
         # environment => "PY_PATH=/home/vagrant/.venvs/riddles/bin/python",

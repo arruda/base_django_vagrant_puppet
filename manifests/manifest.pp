@@ -1,4 +1,5 @@
 $proj_name = "my_project"
+
 group { 'puppet': ensure => present }
 Exec { path => [ '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/', '/usr/local/bin/' ] }
 File { owner => 0, group => 0, mode => 0644 }
@@ -62,7 +63,7 @@ class { 'supervisord':
 }
 ->
 # celery confs
-class { 'celery'
+class { 'celery':
   app_name    => "${proj_name}",
   python_path        => "/home/vagrant/.venvs/${proj_name}/bin/python",
   app_path           => "/vagrant/${proj_name}",
@@ -71,7 +72,7 @@ class { 'celery'
 }
 ->
 # gunicorn confs
-class { 'gunicorn'
+class { 'gunicorn':
   app_name    => "${proj_name}",
   python_path        => "/home/vagrant/.venvs/${proj_name}/bin/python",
   app_path           => "/vagrant/${proj_name}",
@@ -80,8 +81,11 @@ class { 'gunicorn'
 }
 ->
 # supervisord execute
-supervisord::exec {}
-->
+class {'supervisord::exec':
+  venv_path          => "/home/vagrant/.venvs/${proj_name}",
+} ->
+
+
 
 exec { 'collect_statics':
     cwd     =>'/vagrant/',
